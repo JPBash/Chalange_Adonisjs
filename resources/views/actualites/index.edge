@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Actualités</title>
+    <style>body{font-family:Arial,Helvetica,sans-serif} .card{border:1px solid #ddd;padding:12px;margin:8px 0}</style>
+</head>
+<body>
+    <h1>Liste d'Actualités</h1>
+    <button onclick="window.location.href='/actualites/creer'">Créer une Actualité</button>
+    @if(actualites && actualites.length)
+        @each(actualite in actualites)
+            <div class="card">
+                <h3>{{ actualite.title }}</h3>
+                <p>{{ actualite.content }}</p>
+            </div>
+        @endeach
+    @else
+        <p>Aucune actualité pour le moment.</p>
+    @endif
+</body>
+</html>
