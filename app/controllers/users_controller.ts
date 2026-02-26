@@ -14,6 +14,10 @@ export default class UsersController {
     return view.render('pages/register')
   }
 
+async showLogin({ view }: HttpContext) {
+    return view.render('pages/login')
+  }
+
   async store({ request, response }: HttpContext) {
     const payload = request.only(['name', 'email', 'password'])
     const user: User = {
@@ -31,4 +35,4 @@ export default class UsersController {
       users,
     })
   }
-}
+}   
