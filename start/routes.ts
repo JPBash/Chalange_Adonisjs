@@ -1,10 +1,7 @@
-
 import router from '@adonisjs/core/services/router'
-import type { HttpContext } from '@adonisjs/core/http'
-import UsersController from '#controllers/users_controller'
+import UrlController from '#controllers/url_controller'
 
-router.get('/', ({view }: HttpContext) => view.render('pages/home'))
-router.get('/register', [UsersController, 'showRegister'])
-router.post('/users', [UsersController, 'store'])
-router.get('/login', [UsersController, 'showLogin'])
-router.post('/users/login', [UsersController, 'store'])
+router.get('/', [UrlController, 'showForm'])
+router.post('/shorten', [UrlController, 'store'])
+router.get('/admin', [UrlController, 'index'])
+router.get('/:slug', [UrlController, 'redirect'])

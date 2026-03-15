@@ -1,4 +1,4 @@
-import env from '#start/env'
+import Env from '#start/env'
 import { defineConfig } from '@adonisjs/lucid'
 
 const dbConfig = defineConfig({
@@ -7,11 +7,12 @@ const dbConfig = defineConfig({
     postgres: {
       client: 'pg',
       connection: {
-        host: env.get('DB_HOST'),
-        port: env.get('DB_PORT'),
-        user: env.get('DB_USER'),
-        password: env.get('DB_PASSWORD'),
-        database: env.get('DB_DATABASE'),
+        host: Env.get('DB_HOST'),
+        port: Env.get('DB_PORT'),
+        user: Env.get('DB_USER'),
+        password: Env.get('DB_PASSWORD'),
+        database: Env.get('DB_DATABASE'),
+        ssl: false,
       },
       migrations: {
         naturalSort: true,

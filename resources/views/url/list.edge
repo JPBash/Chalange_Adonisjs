@@ -1,0 +1,9 @@
+<h1>Liste des URLs</h1>
+
+<ul>
+  @each(url in urls)
+    <li>
+      {{ url.slug }} → {{ url.originalUrl }}
+    </li>
+  @end
+</ul>

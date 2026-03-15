@@ -1,8 +1,22 @@
 @component("layouts/app", {title: "Accueil"})
-@slot('main')
-  <h1 class="text-3xl font-bold">Bienvenue sur VDL Soir</h1>
-  <p class="mt-2 text-slate-600">
-    Cette page d'accueil est notre premiere vue. Le header et le footer viennent du layout.
-  </p>
-@endslot
-@end
+  @slot('main')
+    <h1 class="text-3xl font-bold">Bienvenue sur VDL Soir</h1>
+
+    <div class="mt-4 p-4 border rounded-lg bg-slate-50">
+      @if(auth.isAuthenticated)
+        <p class="text-lg text-green-600 font-semibold">
+          Ravi de vous revoir, {{ auth.user.name }} !
+        </p>
+        <p class="text-sm text-slate-500">Vous êtes connecté avec l'adresse : {{ auth.user.email }}</p>
+      @else
+        <p class="text-slate-600">
+          Cette page d'accueil est notre première vue. Le header et le footer viennent du layout.
+        </p>
+        <div class="mt-4 space-x-4">
+          <a href="/login" class="text-blue-600 underline">Se connecter</a>
+          <a href="/register" class="text-blue-600 underline">Créer un compte</a>
+        </div>
+      @endif
+    </div>
+  @endslot
+@end 

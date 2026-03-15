@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Raccourcisseur d'URL</title>
+</head>
+<body>
+
+  <h1>Mini Raccourcisseur d'URL</h1>
+
+  <form method="POST" action="/shorten">
+    {{ csrfField() }}
+
+    <input 
+      type="text" 
+      name="url" 
+      placeholder="Entrez une URL..."
+      required
+    />
+
+    <button type="submit">Raccourcir</button>
+  </form>
+
+  @if(result)
+    <hr>
+
+    <p>URL originale : {{ result.originalUrl }}</p>
+
+    <p>
+      URL courte :
+      <a href="{{ result.shortUrl }}">
+        {{ result.shortUrl }}
+      </a>
+    </p>
+
+    <img src="{{ result.qrDataUrl }}" alt="QR code" width="150" />
+  @end
+
+</body>
+</html>
