@@ -1,25 +1,21 @@
-import Env from '#start/env'
-import { defineConfig } from '@adonisjs/lucid'
+import { DatabaseConfig } from '@ioc:Adonis/Lucid/Database'
 
-const dbConfig = defineConfig({
-  connection: 'postgres',
+const databaseConfig: DatabaseConfig = {
+  connection: process.env.DB_CONNECTION || 'pg',
   connections: {
-    postgres: {
+    pg: {
       client: 'pg',
       connection: {
-        host: Env.get('DB_HOST'),
-        port: Env.get('DB_PORT'),
-        user: Env.get('DB_USER'),
-        password: Env.get('DB_PASSWORD'),
-        database: Env.get('DB_DATABASE'),
-        ssl: false,
+        host: process.env.DB_HOST,
+        port: Number(process.env.DB_PORT),
+        user: process.env.DB_USER,
+        password: process.env.DB_PASSWORD,
+        database: process.env.DB_DATABASE,
       },
-      migrations: {
-        naturalSort: true,
-        paths: ['database/migrations'],
-      },
+      healthCheck: false,
+      debug: false,
     },
   },
-})
+}
 
-export default dbConfig
+export default databaseConfig

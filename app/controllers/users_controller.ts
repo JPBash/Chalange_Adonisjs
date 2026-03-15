@@ -32,7 +32,7 @@ export default class UsersController {
       await auth.use('web').login(user)
       return response.redirect().toPath('/')
     } catch (error) {
-      // Si ça échoue, on renvoie une erreur
+      // En cas d'erreur (identifiants invalides), retourne une réponse d'erreur
       return response.badRequest('Email ou mot de passe incorrect')
     }
   }
