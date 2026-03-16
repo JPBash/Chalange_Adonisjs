@@ -1,9 +1,32 @@
-<h1>Liste des URLs</h1>
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Liste des URLs</title>
+</head>
+<body>
 
-<ul>
-  @each(url in urls)
-    <li>
-      {{ url.slug }} → {{ url.originalUrl }}
-    </li>
-  @end
-</ul>
+  <h1> Liste des URLs raccourcies</h1>
+
+  <ul>
+    @each(url in urls)
+      <li>
+        <strong>Originale :</strong> {{ url.originalUrl }} <br>
+        <strong>Courte :</strong> 
+        <a href="/{{ url.slug }}" target="_blank">{{ url.shortUrl }}</a> <br>
+        <strong>QR Code :</strong> <br>
+        <img src="{{ url.qrCode }}" width="150" /> <br>
+
+        <form method="POST" action="/urls/{{ url.id }}/delete" style="margin-top:5px;">
+          {{ csrfField() }}
+          <button type="submit">🗑️ Supprimer</button>
+        </form>
+
+        <hr>
+      </li>
+    @endeach
+  </ul>
+
+  <p><a href="/">← Retour à la création d'URL</a></p>
+
+</body>
+</html>

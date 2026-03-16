@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Raccourcisseur d'URL</title>
+  <title>Mini Raccourcisseur d'URL</title>
 </head>
 <body>
 
@@ -13,7 +13,7 @@
     <input 
       type="text" 
       name="url" 
-      placeholder="Entrez une URL..."
+      placeholder="Entrez une URL complète..."
       required
     />
 
@@ -21,19 +21,18 @@
   </form>
 
   @if(result)
-    <hr>
-
-    <p>URL originale : {{ result.originalUrl }}</p>
-
-    <p>
-      URL courte :
-      <a href="{{ result.shortUrl }}">
-        {{ result.shortUrl }}
-      </a>
+    <h2> URL créée !</h2>
+    <p><strong>URL originale :</strong> {{ result.originalUrl }}</p>
+    <p><strong>URL courte :</strong> 
+      <a href="{{ result.shortUrl }}" target="_blank">{{ result.shortUrl }}</a>
     </p>
 
-    <img src="{{ result.qrDataUrl }}" alt="QR code" width="150" />
-  @end
+    <p><strong>QR code :</strong></p>
+    <img src="{{ result.qrCode }}" alt="QR code" width="200" />
+    <p>
+      <a href="/admin">Voir toutes les URLs</a>
+    </p>
+  @endif
 
 </body>
 </html>

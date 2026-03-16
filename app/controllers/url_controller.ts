@@ -1,58 +1,46 @@
 import type { HttpContext } from '@adonisjs/core/http'
+import Url from '#models/url'
 import QRCode from 'qrcode'
-import UrlController from '#controllers/url_controller'
-
-
-type UrlEntry = {
-  slug: string
-  originalUrl: string
-}
-
-// stockage en mémoire
-const urls: UrlEntry[] = []
-
-// fonction pour générer un slug
-function generateSlug() {
-  return Math.random().toString(36).substring(2, 8)
-}
 
 export default class UrlController {
 
-  // Affiche le formulaire
+  //  Affiche le formulaire
   async showForm({ view }: HttpContext) {
     return view.render('url/index')
   }
 
-  // Traite la création d’une URL courte
+  // Créer une URL courte
   async store({ request, view }: HttpContext) {
 
     const original = request.input('url')
 
-    const slug = generateSlug()
+    const slug = Math.random().toString(36).substring(2, 8)
 
-    const shortUrl = `${request.protocol()}://${request.host()}/${slug}`
-
-    urls.push({
-      slug,
-      originalUrl: original
-    })
+    const shortUrl = `${request.protocol()}://${request.hostname()}/${slug}`
 
     const qrDataUrl = await QRCode.toDataURL(shortUrl, { width: 256 })
 
-    const result = {
+    // Sauvegarde en base PostgreSQL
+    const url = await Url.create({
       originalUrl: original,
-      shortUrl,
       slug,
-      qrDataUrl
-    }
+      shortUrl,
+      qrCode: qrDataUrl
+    })
 
-    return view.render('url/index', { result })
+    return view.render('url/index', { result: url })
   }
 
-  // Redirection vers URL originale
+  // Liste des URLs (page admin)
+async index({ view }: HttpContext) {
+  const urls = await Url.all()
+  return view.render('url/list', { urls })
+  }
+
+  // Redirection via slug
   async redirect({ params, response }: HttpContext) {
 
-    const entry = urls.find(u => u.slug === params.slug)
+    const entry = await Url.findBy('slug', params.slug)
 
     if (!entry) {
       return response.notFound('URL introuvable')
@@ -60,9 +48,9 @@ export default class UrlController {
 
     return response.redirect(entry.originalUrl)
   }
-
-  // Page admin : liste des URLs
-  async index({ view }: HttpContext) {
-    return view.render('url/list', { urls })
+ async destroy({ params, response }: HttpContext) {
+  const url = await Url.find(params.id)
+  if (url) await url.delete()
+  return response.redirect('/admin')
   }
 }

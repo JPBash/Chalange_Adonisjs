@@ -3,9 +3,5 @@
   "compilerOptions": {
     "rootDir": "./",
     "outDir": "./build",
-    "paths": {
-      "@ioc:Adonis/Core/*": ["node_modules/@adonisjs/core/build/*"],
-      "@ioc:Adonis/Lucid/*": ["node_modules/@adonisjs/lucid/build/*"]
-    }
   }
 }
