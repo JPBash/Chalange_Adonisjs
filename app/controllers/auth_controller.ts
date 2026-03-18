@@ -1,10 +1,46 @@
-import { register } from "module"
+import type { HttpContext } from '@adonisjs/core/http'
+import User from '#models/user'
 
-// import type { HttpContext } from '@adonisjs/core/http'
- async register({ request, response }: HttpContext) {
-    const { email, password, full_name } = request.only(['email', 'password', 'full_name'])
+export default class AuthController {
 
-    // Validation basique
-    if (!email || !password) {
-      return response.badRequest('Email et mot de passe requis')
-    }
+  // Affiche formulaire inscription
+  async showRegister({ view }: HttpContext) {
+    return view.render('auth/register')
+  }
+
+  // 📌 INSCRIPTION
+  async register({ request, response }: HttpContext) {
+
+    const data = request.only(['name', 'email', 'password'])
+
+    await User.create(data)
+
+    return response.redirect('/login')
+  }
+
+  // Affiche formulaire login
+  async showLogin({ view }: HttpContext) {
+    return view.render('auth/login')
+  }
+
+  // 📌 CONNEXION
+  async login({ request, auth, response }: HttpContext) {
+
+    const email = request.input('email')
+    const password = request.input('password')
+
+    const user = await User.verifyCredentials(email, password)
+
+    await auth.use('web').login(user)
+
+    return response.redirect('/admin')
+  }
+
+  // 📌 DÉCONNEXION
+  async logout({ auth, response }: HttpContext) {
+
+    await auth.use('web').logout()
+
+    return response.redirect('/')
+  }
+}
