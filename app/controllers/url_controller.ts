@@ -1,11 +1,16 @@
 import type { HttpContext } from '@adonisjs/core/http'
 import Url from '#models/url'
 import QRCode from 'qrcode'
+import { config } from 'process'
 
 export default class UrlController {
 
   //  Affiche le formulaire
-  async showForm({ view }: HttpContext) {
+  async showForm({ request, view, response }: HttpContext) {
+    const slug = request.input('slug')
+    if (slug) {
+      return response.redirect(`/${slug}`)
+    }
     return view.render('url/index')
   }
 
@@ -48,9 +53,29 @@ async index({ view }: HttpContext) {
 
     return response.redirect(entry.originalUrl)
   }
+
  async destroy({ params, response }: HttpContext) {
   const url = await Url.find(params.id)
   if (url) await url.delete()
   return response.redirect('/admin')
   }
+  async edit({ params, view }: HttpContext) {
+    const url = await Url.find(params.id)
+    if (!url) return view.render('url/edit', { error: 'URL introuvable' })
+    return view.render('url/edit', { url })
+  }
+  async update({ params, request, response }: HttpContext) {
+    const url = await Url.find(params.id)
+    if (!url) return response.notFound('URL introuvable')
+
+  url.originalUrl = request.input('url')
+  url.slug = request.input('slug') || url.slug
+  url.shortUrl = `${request.protocol()}://${request.hostname()}/${url.slug}`
+  url.qrCode = await QRCode.toDataURL(url.shortUrl, { width: 256 })
+
+  await url.save()
+
+  return response.redirect('/admin')
+  }
+
 }

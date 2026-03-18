@@ -1,0 +1,10 @@
+<h1>Modifier l'URL</h1>
+
+<form method="POST" action="/urls/{{ url.id }}/update">
+  {{ csrfField() }}
+
+  <input type="text" name="url" value="{{ url.originalUrl }}" required />
+  <input type="text" name="slug" value="{{ url.slug }}" required />
+
+  <button type="submit">Mettre à jour</button>
+</form>

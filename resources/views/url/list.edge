@@ -15,10 +15,18 @@
         <a href="/{{ url.slug }}" target="_blank">{{ url.shortUrl }}</a> <br>
         <strong>QR Code :</strong> <br>
         <img src="{{ url.qrCode }}" width="150" /> <br>
+        
+       Originale : {{ url.originalUrl }} <br>
+       Courte : <a href="/{{ url.slug }}">{{ url.shortUrl }}</a> <br>
+       QR Code : <br>
+       <img src="{{ url.qrCode }}" width="150" /> <br>
 
+      <!-- Boutons -->
+      <a href="/urls/{{ url.id }}/edit"> Modifier</a>
+        
         <form method="POST" action="/urls/{{ url.id }}/delete" style="margin-top:5px;">
           {{ csrfField() }}
-          <button type="submit">🗑️ Supprimer</button>
+          <button type="submit"> Supprimer</button>
         </form>
 
         <hr>

@@ -26,6 +26,12 @@
     <p><strong>URL courte :</strong> 
       <a href="{{ result.shortUrl }}" target="_blank">{{ result.shortUrl }}</a>
     </p>
+    
+    <h2>Accéder à une URL courte</h2>
+    <form method="GET" action="/">
+    <input type="text" name="slug" placeholder="Entrer le short URL" required>
+    <button type="submit">Parcourir</button>
+    </form>
 
     <p><strong>QR code :</strong></p>
     <img src="{{ result.qrCode }}" alt="QR code" width="200" />
